@@ -1,24 +1,42 @@
 #!usr/bin/env python
 #coding=utf-8
 # match.py
-from Global import DFA_hash_dic, node_reg_mapping
+from Global import DFA_hash_dic, node_reg_mapping, key_mapping_regex
+import logging
+import re
 
-class MatchHandler(Object):
+class MatchHandler(object):
     def __init__(self,fp):
-        self._current_status=0
+        self._current_status='0'
         self._succ_list = []
         # fp come from open("file path",'r')
         self._fp = fp
         self._end_file = False
 
+    def _mapping_key(self, single_char):
+        key = None
+        if DFA_hash_dic[self._current_status].has_key(single_char):
+            key = single_char
+        else:
+            for (temp_key, value) in key_mapping_regex.items():
+                # find if this single char satisfied with some kind of regex expression.
+                if re.match(value,single_char):
+                    key = temp_key
+                    break
+            # find a key, then judge if this is a key in dictory
+            if key and not DFA_hash_dic[self._current_status].has_key(key):
+                key = None
+        return key
+            
     def _match_one_char(self, single_char):
-        if not DFA_hash_dic[self._current_status][single_char]:
+        logging.info("match one char :%s"%single_char)
+        key = self._mapping_key(single_char)
+        logging.info("key is :%s"%key)
+        if not key:
             return None
         else:
-            next_status = DFA_hash_dic[self._current_status].has_key(single_char)
+            next_status = DFA_hash_dic[self._current_status][key]
             return next_status
-            prefix = next_status[0]
-            if prefix == 'e':
                     # get a end node, record in succ_list.
 
     def _append_succ_list(self, status, str):
@@ -34,8 +52,8 @@ class MatchHandler(Object):
         prefix = status[0]
         if prefix == 'e':
             # next status is a end node, record in succ_list.
-            info = {'status':status,'text':'str'}
-            self._succ_list.append(next_status)
+            info = {'status':status,'text':str}
+            self._succ_list.append(info)
 
     def _update_status(self, next_status):
         self._current_status = next_status
@@ -51,16 +69,18 @@ class MatchHandler(Object):
             next char or None
         """
         # fp come from open("file path",'r')
-        result = fp.read(1)
+        result = self._fp.read(1)
         if result:
             return result
         else:
             self._end_file = True
             return None
+    def reset_file_pointer(self):
+        self._fp.seek(self._fp.tell() - 1)
 
     def _list_mapping(self):
         if self._succ_list == []:
-            return False
+            return None
         else:
             # find the min level regex as the match string.
             min_level = 99
@@ -75,12 +95,12 @@ class MatchHandler(Object):
             result = {
                 'status':min_status,
                 'text':self._succ_list[min_index]['text'],
-                'info':self.node_reg_mapping[min_status]['info']
+                'info':node_reg_mapping[min_status]['info']
             }
             return result
 
     def _reset(self):
-        self._current_status=0
+        self._current_status='0'
         self._succ_list = []
 
     def _match_one_reg(self):
@@ -99,18 +119,23 @@ class MatchHandler(Object):
                 # get the end of file
                 break
             next_status = self._match_one_char(next_char)
+            logging.info("next status is %s"%next_status)
             if next_status == None:
                 # failed or finfish, depend on succ_list is empty or not.
+                # reset read pointer
+                self.reset_file_pointer()
                 break
             else:
-                self._append_succ_list(self, next_status, current_text)
+                self._append_succ_list(next_status, current_text)
                 self._update_status(next_status)
             next_char = self._get_next_char()
+            if next_char == None:
+                break
             current_text = current_text+next_char
         # match finish, now mapping.
         result = self._list_mapping()
         self._reset()
-        if result == None:
+        if not result:
             # return the fail match string
             return False,current_text
         else:
@@ -122,8 +147,9 @@ class MatchHandler(Object):
             if self._end_file:
                 return result_queue
             success, result = self._match_one_reg()
+            logging.info("success:%s, result: %s"%(success,result))
             if not success:
-                result_queue.append("match error with: %s"%result)
+                result_queue.append("match error with: text\"%s\""%result)
                 return result_queue
             else:
                 result_queue.append(result)

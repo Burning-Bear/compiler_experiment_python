@@ -8,3 +8,13 @@ fp.readline([size])                 #读一行，如果定义了size，有可能
 while(True):
     if result:
         print result
+
+字典的遍历方法：
+
+
+>>> for k in d.keys():
+...   if d[k] == 0:
+...     del(d[k])
+
+for (d,x) in dict.items():
+     print "key:"+d+",value:"+str(x)
