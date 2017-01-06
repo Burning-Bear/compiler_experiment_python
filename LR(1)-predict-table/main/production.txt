@@ -1,0 +1,14 @@
+S->E
+N->N
+E->E+T
+N->NTN
+E->T
+N->N
+T->T*F
+N->NTN
+T->F
+N->N
+F->(E)
+N->TNT
+F->i
+N->T

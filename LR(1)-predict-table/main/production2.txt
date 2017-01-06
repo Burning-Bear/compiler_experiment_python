@@ -1,0 +1,8 @@
+E->S
+N->N
+S->CC
+N->NN
+C->cC
+N->TN
+C->d
+N->T
