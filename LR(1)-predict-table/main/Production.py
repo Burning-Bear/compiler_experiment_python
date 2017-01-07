@@ -12,7 +12,9 @@ class Token(object):
     """用于描述文法符号，也就是一个token
     """
     def __init__(self,char,char_type):
+        # token的字符
         self.char = char
+        # 类型，是否为终结符,N为非终结符，T为终结符
         self.type = char_type
 
     def print_char(self):
@@ -32,6 +34,12 @@ class ProItem(object):
         self.length = 0
 
     def add_string(self, string='', char_type=''):
+        """以字符串的形式，进行产生式尾部的追加补充
+
+        Args:
+            string: 产生式字符串
+            char_type: 产生式类型序列
+        """
         self.length = len(string)
         for (i,j) in zip(string, char_type):
             self.token_list.append(Token(i,j))   
@@ -45,6 +53,11 @@ class ProItem(object):
         self.length = self.length + len(extend_list)
 
     def get_token_by_index(self,index):
+        """获得一个产生式某个下标对应的token
+
+        Args:
+            index: 字符的下标
+        """
         return self.token_list[index]
 
     def print_item(self):
@@ -53,9 +66,18 @@ class ProItem(object):
             x.print_char()     
 
     def get_char_by_index(self,index):
+        """直接获得产生式某个下标对应的字符信息
+
+        Args:
+            index:产生式Token位置下标
+        """
         return self.token_list[index].char
 
     def get_list(self):
+        """获得整个产生式的token序列
+
+
+        """
         return self.token_list
 
 class ProductionSet(object):
@@ -74,12 +96,14 @@ class ProductionSet(object):
         #             [origin_produc, origin_produc]
         #             代表的是这个终结符可以产生的产生式的标号集合
         self.inner_status_dict = {}
+        # 终结符的字符集合
         self.action_set = set(["$"])
+        # 非终结符的字符集合
         self.goto_set = set()
+        
         pro_line = fp.readline()
         type_line =fp.readline()
         while pro_line != '':
-            # print 'pro :%s type is :%s'%(pro_line, type_line)
             left = ProItem()
             right =ProItem()
             left.add_string(pro_line[0],type_line[0])

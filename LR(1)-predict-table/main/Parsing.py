@@ -35,6 +35,7 @@ class ParsingProcessor(object):
            
     def parsing(self):
         """语法分析的主程序
+
         """
         token = self.input_queue[0]
         #   4. 获取读头的元素token，获取当前的状态号码为status
@@ -90,6 +91,8 @@ class ParsingProcessor(object):
                     # - 产生式规约成功，输出
 
     def print_log(self):
+        """以表格的形式打印分析过程
+        """
         # print self.parsing_log
         print "printing the parsing step..."
         tabletab=['id','status stack','token stack','input','action']

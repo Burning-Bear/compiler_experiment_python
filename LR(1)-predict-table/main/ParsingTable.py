@@ -28,29 +28,47 @@ from Production import ProItem
 
 class LR_produc_item(object):
     """
+        用于描述一个LR(1)分析过程中每个产生式的状态，它包含了dot和预测符信息
+
         - LR_produc_item对象是在状态图中的每个产生式的状态，他有三个元素：
           - produc_id: 原始产生式的id
           - dot_location: 点当前的位置，记录的是其右边的字符的下表
           - predic_list: 这是一个列表，记录的是其预测符号
     """
     def __init__(self,id, dot_location, predict_list):
+        # 产生式的id
         self.produc_id = id
+        # 点当前的位置，记录的是其右边的字符的下表
         self.dot_location =dot_location
+        # 这是一个集合，记录的是其预测符号
         self.predict_list = set(predict_list)
 
     def the_same_lr(self,item):
+        """判断两个LR产生式项是否相同，不比较预测符情况
+        
+        Args:
+            item 用于比较的产生式
+        """
         if self.produc_id == item.produc_id and self.dot_location == item.dot_location:
             return True
         else:
             return False
 
     def the_same_lr_full(self,item):
+        """判断两个LR产生式项是否相同，需要比较预测符情况
+        
+        Args:
+            item 用于比较的产生式
+        """
         if self.produc_id == item.produc_id and self.dot_location == item.dot_location and self.predict_list-item.predict_list == set([]):
             return True
         else:
             return False
 
     def update_predict(self,predict_list):
+        """对该产生式的预测符号进行追加，因为是集合的结构，可以自动进行去重
+
+        """
         self.predict_list.update(predict_list)
 
     def print_lr_item(self):
@@ -58,14 +76,20 @@ class LR_produc_item(object):
 
 class Status(object):
     """
-    - Status对象，记录了一个确定化状态的全部信息
+    - Status对象，记录了一个状态的全部信息
           - 有一个list，list的每个元素是LR_proudc_item对象 
+          - length 字段用来记录现在Status一共有的产生式的个数
     """
     def __init__(self):
         self.list = []
         self.length=0
     
     def has_same_status(self,status):
+        """判断两个状态是否完全相同
+
+        Args:
+            status: 用于比较的状态
+        """
         for index, item in enumerate(status.get_status_list()):
             # 此时相同产生式，但是预测符不同的，已经合并了，
             #　所以你不用考虑预测符不同的相同产生式的情况
@@ -74,6 +98,16 @@ class Status(object):
                 return False
         return True
     def has_same_lr_item(self, produc_item,full=False):
+        """比较待匹配的产生式是否能在Status中找到，
+
+        Args:
+            produc_item:  一个LR_produc_item 对象
+            full: true 意味着需要匹配预测符号，false不需要保证预测符一样
+
+        Returns:
+            如果相同，返回所在的下表
+            否则，返回-1
+        """
         for index, item in enumerate(self.list):
             if full:            
                 if item.the_same_lr_full(produc_item):   
@@ -84,6 +118,13 @@ class Status(object):
         return -1       
 
     def add(self, produc_item):
+        """加入新的产生式进该状态节点，这个函数已经考虑了重复产生式的预测符合并的情况
+
+        Args：
+            produc_item:用于合并进来的产生式
+
+
+        """
         # 如果该项和已有状态中的产生式一样，dot也要一样，直接合并
         index = self.has_same_lr_item(produc_item)
         if index == -1:
@@ -114,24 +155,25 @@ class ParsingTableProcessor(object):
         #           - 如果是移进项，'s'+id,代表的就是移进的确定化状态编号
         #           - 如果是规约项，'r'+id代表的就是规约的产生式编号        
         self.predict_parsing_table = {}
-
-        # 状态间拓展使用的是广度优先遍历，这里构造了一个队列，
-        # 用来存放新产生的确定化状态的标号，以便接下来进行的状态内部拓展
-        self.to_extension_queue = []
           # - 用于记录已经确定化的状态列表，
           # - 这是个list，list的下表的含义是确定化的状态
           # - list的每一个item是一个Status对象qued
         self.definited_status_list = []
         self.production_list = production
+        # 用来记录下一个状态的标号的id
         self.status_next_id = 0
 
     def get_next_status_id(self):
+        """获得下一个状态的标号的id
+
+        """
         result = self.status_next_id
         self.status_next_id = self.status_next_id + 1
         return result
 
     def First(self, produc_item):
-        """
+        """求first算法
+
         Args:
             produc_item: ProItem,输入的是一个产生式的token_list
         
@@ -161,6 +203,12 @@ class ParsingTableProcessor(object):
         return predict_list
 
     def regression(self, Status, status_id):
+        """将状态中需要规约的产生式填入predict parsing table
+        
+        Args：
+            Status：待检查的状态
+            status_id: 这个产生式的id[todo: id应该作为status本身的一个对象，而不是作为参数传递进来]
+        """
         stat_list = Status.get_status_list()
         old_length = 0
         new_length = Status.length
@@ -180,6 +228,11 @@ class ParsingTableProcessor(object):
                         self.add_to_parsing_table('r' + str(pro_id), status_id, predict_char)
 
     def closure(self, Status):
+        """内部状态拓展，构造闭包的算法
+
+        Args:
+            Status：用来子状态拓展的状态
+        """
         stat_list = Status.get_status_list()
         old_length = 0
         new_length = Status.length
@@ -227,11 +280,11 @@ class ParsingTableProcessor(object):
             new_length = Status.length
             # Status.print_status()
         return Status
-
-    def add_to_queue(self, Status):
-        self.to_extension_queue.add(Status)
     
     def get_parsing(self, origin_id, token):
+        """获得分析表的具体信息
+        [这个函数的结构设计的不是特别好！]
+        """
         if self.predict_parsing_table[origin_id].has_key(token):
             return self.predict_parsing_table[origin_id][token]
         else:
@@ -251,7 +304,9 @@ class ParsingTableProcessor(object):
 
 
     def goto(self, status):
-        """
+        """用来进行状态间拓展
+
+        Args:
             status 是状态集合
             X 是用于goto的边
         """
@@ -277,10 +332,19 @@ class ParsingTableProcessor(object):
         return status_dict
 
     def add_to_definited_status(self, status):
+        """将状态加入确定化的状态字典
+        """
          self.definited_status_list.append(status)
 
     def add_to_parsing_table(self, symbol, origin_id, token):
-        # print "[in add to parsing table],origin_id %s"%origin_id
+        """将数据填入预测分析表
+
+        Args：
+            symbol：需要填入的符号信息，有r+id和s+id两种情况
+            origin_id:状态id
+            token:token字符信息
+
+        """
         if self.predict_parsing_table.has_key(origin_id):
             self.predict_parsing_table[origin_id][token] = symbol
         else:
@@ -289,13 +353,19 @@ class ParsingTableProcessor(object):
             }
 
     def same_status(self, Status):
+        """判断两个状态是否是相同的状态
+
+        Returns：
+            -1 如果不是相同的状态
+            index 如果是相同的状态，返回状态的id标号
+        """
         for index,value in enumerate(self.definited_status_list):
             if Status.has_same_status(value):
                 return index
         return -1
 
     def print_parsing_table(self):
-
+        
         print "printing the predict parsing table..."
         tabletab = ['STATUS']
         for key in self.production_list.get_action_set():

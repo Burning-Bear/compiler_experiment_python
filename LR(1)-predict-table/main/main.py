@@ -15,10 +15,16 @@ logging.basicConfig(level=logging.INFO)
 
 def parsing_table_driver(processor):
     """LR(1)预测分析表构造处理器的驱动，调用它可以构造成分析表
+
     Args:
         processor: 输入是分析表处理器：
+    
+    Returns:
+        processor，构造完成之后的构造器ParsingTableProcessor
     """
     definited_status = processor.init_status()
+    # 状态间拓展使用的是广度优先遍历，这里构造了一个队列，
+    # 用来存放新产生的确定化状态的标号，以便接下来进行的状态内部拓展
     to_extent_queue = Queue.Queue(maxsize=-1)
     to_extent_queue.put([0, definited_status])
     # print "----print definited status------,"
@@ -50,17 +56,19 @@ def parsing_table_driver(processor):
 
 
 fp = open("production.txt",'r')
+# 构造产生式
 production = ProductionSet(fp)
-# production.print_production_instance()
-# production.print_inner_dict()
+# 生成分析表构造器
 processor = ParsingTableProcessor(production)
-# second_status.print_status()
+# 构造分析表
 processor = parsing_table_driver(processor)
-
+# 打印
 processor.print_parsing_table()
 processor.print_status_list()
+# 语法分析
 fp = open("input.txt",'r')
+# 构造语法分析器
 parsing = ParsingProcessor(fp,processor.predict_parsing_table,processor.production_list)
 parsing.parsing()
-
+# 打印分析结构
 parsing.print_log()

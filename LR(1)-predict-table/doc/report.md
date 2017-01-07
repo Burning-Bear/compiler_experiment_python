@@ -40,7 +40,7 @@
 - LR_produc_item对象是在状态图中的每个产生式的状态，他有三个元素：
   - produc_id: 原始产生式的id
   - dot_location: 点当前的位置，记录的是其右边的字符的下表
-  - predic_list: 这是一个列表，记录的是其预测符号
+  - predic_list: 这是一个集合，记录的是其预测符号
 
 ## 预测分析表产生算法逻辑：
 1. 化简产生式，将其中带有｜ 或号的分割开，
@@ -99,6 +99,27 @@
       if eps not in first:
         break;
 
-## 分析tokens序列逻辑
-
+## 分析tokens序列
+  1. 构造输入流，在结尾加上$
+  2. 需要有一个栈，这个栈有两个元素，一个是状态，一个是符号
+  3. 初始化栈，状态为0号，符号为$
+  4. 获取读头的元素token，获取当前的状态号码为status
+  5. 根据预测分析表进行条件判断：
+    - 查看parsing_table[status][token]对应的符号，设为 result
+    - 如果result 为空，分析失败
+    - 如果result 为 移进项，也就是s开头，则获得其移进的项目id，shift_status_id
+      - 将[shift_status_id,token]压入栈中，读头读取新的元素
+    - 如果result为规约项，也就是r开头
+      - 如果规约项为r0,那么翻译成功
+      - 否则
+        - 根据规约项产生式的长度，弹出对应的栈，的元素，
+        - 设规约项左边的符号为token,
+        - 根据现在的剩下的栈顶status和新的符号token，求parsing_table[status][token]对应的符号，设为result
+        - 因为这里的token为非终结符，所以对应的result一定为移进符号，
+        - 将 [result[1],token]压入栈中
+        - 产生式规约成功，输出
+## 分析程序的数据结构
+- 预测分析表：parsing_table
+- 二元栈 stack
+- 输入记录列表，用于最后的格式化输出
 ## 项目结构
