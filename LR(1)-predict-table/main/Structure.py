@@ -253,9 +253,7 @@ class FaProcessor(object):
         result = self.status_next_id
         self.status_next_id = self.status_next_id + 1
         return result
-
-    def undo_status_id(self):
-        self.status_next_id = self.status_next_id - 1
+        
     def First(self, produc_item):
         """
         Args:
