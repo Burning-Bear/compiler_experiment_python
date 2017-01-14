@@ -7,13 +7,20 @@ import re
 
 class MatchHandler(object):
     def __init__(self,fp):
-        self._current_status='0'
-        self._succ_list = []
-        # fp come from open("file path",'r')
-        self._fp = fp
-        self._end_file = False
+        self._current_status='0'# 匹配器当前的状态位
+        self._succ_list = []# 匹配成功的结果队列
+        self._fp = fp  # fp come from open("file path",'r')
+        self._end_file = False# 文件是否到达结尾的状态字
 
-    def _mapping_key(self, single_char):
+    def _mapping_key_unit(self, single_char):
+        """被Match_one_char函数调用的内部函数，用来检查该字符能否在DFA中得到匹配
+
+        Args:
+            single_char: 输入的字符
+
+        Returns:
+            如果匹配，就输出对应的匹配的key，否则输出None
+        """
         key = None
         if DFA_hash_dic[self._current_status].has_key(single_char):
             key = single_char
@@ -29,9 +36,15 @@ class MatchHandler(object):
         return key
             
     def _match_one_char(self, single_char):
-        logging.info("match one char :%s"%single_char)
-        key = self._mapping_key(single_char)
-        logging.info("key is :%s"%key)
+        """匹配单个字符，返回下一个状态
+
+        Args:
+            single_char: 输入的字符
+
+        Returns:
+            如果匹配，就输出下一个状态，否则输出None
+        """
+        key = self._mapping_key_unit(single_char)
         if not key:
             return None
         else:
@@ -40,7 +53,7 @@ class MatchHandler(object):
                     # get a end node, record in succ_list.
 
     def _append_succ_list(self, status, str):
-        """Store success information, include status and regex string, into succ_list.
+        """将匹配成功的状态和对应的信息存储入succ_list中，用于匹配结果的输出
 
         Args:
             status: 'exx'
@@ -56,6 +69,14 @@ class MatchHandler(object):
             self._succ_list.append(info)
 
     def _update_status(self, next_status):
+        """匹配结束之后，需要更新状态字到下一个状态
+
+        Args:
+            next_status:更新的状态值
+
+        Returns:
+            None
+        """
         self._current_status = next_status
 
     def _get_next_char(self):
@@ -76,9 +97,13 @@ class MatchHandler(object):
             self._end_file = True
             return None
     def reset_file_pointer(self):
+        """单个词素匹配结束，在输入流中回退一位重新匹配
+        """
         self._fp.seek(self._fp.tell() - 1)
 
     def _list_mapping(self):
+        """匹配结束之后，从匹配结果中寻找优先级最低的作为匹配结果显示
+        """
         if self._succ_list == []:
             return None
         else:
@@ -100,6 +125,8 @@ class MatchHandler(object):
             return result
 
     def _reset(self):
+        """一个正规表达式匹配结束之后,重置初始状态和匹配成功的list
+        """
         self._current_status='0'
         self._succ_list = []
 
@@ -119,13 +146,13 @@ class MatchHandler(object):
                 # get the end of file
                 break
             next_status = self._match_one_char(next_char)
-            logging.info("next status is %s"%next_status)
             if next_status == None:
                 # failed or finfish, depend on succ_list is empty or not.
                 # reset read pointer
                 self.reset_file_pointer()
                 break
             else:
+                # find a match token.
                 self._append_succ_list(next_status, current_text)
                 self._update_status(next_status)
             next_char = self._get_next_char()
@@ -142,6 +169,8 @@ class MatchHandler(object):
             return True,result
 
     def match_driver(self):
+        """驱动词法分析器的驱动器，主函数只需要运行这个方法即可
+        """
         result_queue = []
         while(True):
             if self._end_file:

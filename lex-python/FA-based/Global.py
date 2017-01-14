@@ -53,8 +53,8 @@ node_reg_mapping={
     'e42':{'level':1,'info':'relational operator'},
     'e14':{'level':0,'info':'whitespace'},
     'e17':{'level':1,'info':'delimiter'},
-    'e19':{'level':1,'info':'delimiter'},
-    'e21':{'level':1,'info':'brackets'},
+    'e19':{'level':1,'info':'brackets'},
+    'e21':{'level':1,'info':'block'},
     'e23':{'level':2,'info':'digits'},
     'e24':{'level':2,'info':'identfier'},
 }
