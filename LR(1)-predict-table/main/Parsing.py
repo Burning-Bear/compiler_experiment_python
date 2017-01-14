@@ -9,14 +9,15 @@
 # Parsing.py
 import Queue
 import json
+import logging
 from prettytable import PrettyTable
 class ParsingProcessor(object):
     def __init__(self, fp, parsing_table, production_list):
 
         #   1. 构造输入流，在结尾加上$
         self.input_queue = list(fp.read() + '$')
-        # 2. 需要有一个栈，这个栈有两个元素，一个是状态，一个是符号
-        #  3. 初始化栈，状态为0号，符号为$
+        #   2. 需要有一个栈，这个栈有两个元素，一个是状态，一个是符号
+        #   3. 初始化栈，状态为0号，符号为$
         self.token_stack= ['$']
         self.status_stack = [0]
         # 用于记录分析过程
@@ -43,13 +44,12 @@ class ParsingProcessor(object):
             status = self.status_stack[-1]
             # - 查看parsing_table[status][token]对应的符号，设为 result
             # print self.parsing_table
-            # try:
             try:
                 result = self.parsing_table[status][token]
             except Exception,e:
                 # - 如果result 为空，分析失败
-                print "error status: %s ,token: %s"%(status,token)
-                print "parsing table for this status is : %s"%self.parsing_table[status]
+                logging.info("error status: %s ,token: %s"%(status,token))
+                logging.info("parsing table for this status is : %s"%self.parsing_table[status])
                 return False
             if result[0]=='s':
             # - 如果result 为 移进项，也就是s开头，则获得其移进的项目id，shift_status_id
@@ -93,12 +93,10 @@ class ParsingProcessor(object):
     def print_log(self):
         """以表格的形式打印分析过程
         """
-        # print self.parsing_log
-        print "printing the parsing step..."
         tabletab=['id','status stack','token stack','input','action']
         x = PrettyTable(tabletab)  
         x.align["STATUS"] = "l"# Left align city names
         for item in self.parsing_log:
             x.add_row(item)
-        print x
+        logging.info("printing the parsing step...\n%s"%x)
         

@@ -176,9 +176,10 @@ class MatchHandler(object):
             if self._end_file:
                 return result_queue
             success, result = self._match_one_reg()
-            logging.info("success:%s, result: %s"%(success,result))
             if not success:
-                result_queue.append("match error with: text\"%s\""%result)
+                logging.info("can not match: %s"%result)
+            if not success:
+                result_queue.append(result)
                 return result_queue
             else:
                 result_queue.append(result)

@@ -6,7 +6,10 @@
 # Modified    :   2017.1.7
 # Version     :   1.0
 
+"""
+Production 用于将一个char序列转化为存储token相关信息的表达式数据结构
 
+"""
 # Production.py
 class Token(object):
     """用于描述文法符号，也就是一个token

@@ -3,14 +3,14 @@
 
 # Author      :   Xionghui Chen
 # Created     :   2017.1.6
-# Modified    :   2017.1.7
+# Modified    :   2017.1.14
 # Version     :   1.0  
 
 
-# Structure.py
+# ParsingTable.py
 
 """
-    - Status对象，记录了一个确定化状态的全部信息
+    - Status 对象，记录了一个确定化状态的全部信息
       - 有一个list，list的每个元素是LR_proudc_item对象
 
     - LR_produc_item对象是在状态图中的每个产生式的状态，他有三个元素：
@@ -144,6 +144,7 @@ class Status(object):
             logging.info("--status number :%s"%index)
             x.print_lr_item()
 
+
 class ParsingTableProcessor(object):
     def __init__(self, production):
         # - predict_parsing_table:
@@ -191,6 +192,7 @@ class ParsingTableProcessor(object):
                 for produc_id in self.production_list.get_by_char(token.char):
                     # 查看当前的token能够产生的所有产生式，produc_id 为产生式的下标,对产生式求first
                     first.update(self.First(self.production_list.get_right_by_index(produc_id)))
+                
                 # 遍历完成当前token的所有产生式
                 # 查看token 的first能否产生SPSILON，如果可以产生，需要把EPSILON去掉，接着求下一个token的first
                 # 如果不能产生SPSILON，说明遍历已经结束，将得到的SPSILON加入predict_list
@@ -236,7 +238,7 @@ class ParsingTableProcessor(object):
         stat_list = Status.get_status_list()
         old_length = 0
         new_length = Status.length
-        # 循环直到找不到新的产生式为止
+        # 循环直到状态内找不到新的产生式为止,也就是两次循环的Status的产生式的个数相等
         # pdb.set_trace()
         while(old_length != new_length):
             old_length = new_length
@@ -245,13 +247,8 @@ class ParsingTableProcessor(object):
                 pro_id = item.produc_id
                 # pro_item 是一个产生式ProItem对象
                 pro_item = self.production_list.get_right_by_index(pro_id)
-                if item.dot_location == pro_item.length:
-                    # LR1 产生式的dot已经到末尾了，需要进行规约操作
-                    # print "starting regression"
-                    # for predict_char in item.predict_list:
-                    #     self.add_to_parsing_table('r' + str(pro_id), status_id, predict_char)
-                    pass
-                else:
+                if item.dot_location != pro_item.length:
+                    # 产生式的dot没有到末尾，可以进行拓展
                     next_token = pro_item.token_list[item.dot_location]
                     if next_token.type == 'N':
                         # 如果下一个token是非终结符，那么可以进行内部的状态位拓展
@@ -267,10 +264,7 @@ class ParsingTableProcessor(object):
                             else:
                                 new_pro_item = ProItem()
                                 new_pro_item.add(pro_item.token_list[item.dot_location+1:])
-                                # 将预测福序列转化为[char, char_type]的表达形式
-                                # char_list = [Token(x,'T') for x in item.predict_list]
-                                # new_pro_item.add(char_list)
-                                #new_pro_item.print_item()
+                                # 求first
                                 predict_list = self.First(new_pro_item)
                                 if EPSILON in predict_list:
                                     # 当predict_list有epsilon的时候，再把原来的预测符加上来
@@ -334,7 +328,7 @@ class ParsingTableProcessor(object):
     def add_to_definited_status(self, status):
         """将状态加入确定化的状态字典
         """
-         self.definited_status_list.append(status)
+        self.definited_status_list.append(status)
 
     def add_to_parsing_table(self, symbol, origin_id, token):
         """将数据填入预测分析表
@@ -366,7 +360,7 @@ class ParsingTableProcessor(object):
 
     def print_parsing_table(self):
         
-        print "printing the predict parsing table..."
+        
         tabletab = ['STATUS']
         for key in self.production_list.get_action_set():
             tabletab.append("A:"+key)
@@ -384,13 +378,13 @@ class ParsingTableProcessor(object):
             for key in self.production_list.get_goto_set():
                 row.append(self.get_parsing(index,key))
             x.add_row(row)
-        print x
+        logging.info("printing the predict parsing table...\n %s"%x)
 
     def print_status_list(self):
-        print "printing the definited status list..."
+        logging.info("printing the definited status list...\n")
         for index, status in enumerate(self.definited_status_list):
-            print "----------------------------------"
-            print '|',("status I%s:"%index).ljust(30),'|'
+            logging.info("--------------------------------")
+            logging.info('|'+("status I%s:"%index).ljust(30)+'|')
             for lr_item in status.get_status_list():
                 produc_id = lr_item.produc_id
                 dot_location = lr_item.dot_location
@@ -402,6 +396,6 @@ class ParsingTableProcessor(object):
                     if index == dot_location:
                         right_char = right_char+'.'
                     right_char = right_char + token.char
-                print '|',(left_char+"->"+right_char+","+str(predict_list)).center(30),"|"
-            print "----------------------------------"
-            print "  "
+                logging.info('|'+(left_char+"->"+right_char+","+str(predict_list)).center(30)+"|")
+            logging.info("--------------------------------")
+            logging.info("  ")

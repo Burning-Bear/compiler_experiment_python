@@ -1,71 +1,18 @@
-INFO:root:success:True, result: {'status': 'e33', 'text': 'int', 'info': 'type'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'main', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e19', 'text': '(', 'info': 'brackets'}
-INFO:root:success:True, result: {'status': 'e19', 'text': ')', 'info': 'brackets'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '\n', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e21', 'text': '{', 'info': 'block'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' \n    ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e33', 'text': 'int', 'info': 'type'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'a', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '=', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e23', 'text': '10', 'info': 'digits'}
-INFO:root:success:True, result: {'status': 'e17', 'text': ';', 'info': 'delimiter'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '  \n    ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'float', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'b', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e17', 'text': ',', 'info': 'delimiter'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'c', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e17', 'text': ';', 'info': 'delimiter'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '      \n    ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'c', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '=', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'b', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '+', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'a', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e17', 'text': ';', 'info': 'delimiter'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '\n    ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e27', 'text': 'if', 'info': 'if keyword'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e19', 'text': '(', 'info': 'brackets'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'a', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e42', 'text': '>=', 'info': 'relational operator'}
-INFO:root:success:True, result: {'status': 'e23', 'text': '0', 'info': 'digits'}
-INFO:root:success:True, result: {'status': 'e19', 'text': ')', 'info': 'brackets'}
-INFO:root:success:True, result: {'status': 'e21', 'text': '{', 'info': 'block'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '\n      ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'a', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '=', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'a', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '+', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e23', 'text': '1', 'info': 'digits'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '    \n    ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e41', 'text': 'while', 'info': 'while keyword'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'b', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e42', 'text': '!=', 'info': 'relational operator'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e23', 'text': '0', 'info': 'digits'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e32', 'text': 'do', 'info': 'do keyword'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '\n      ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'b', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '=', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'b', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e7', 'text': '+', 'info': 'operator'}
-INFO:root:success:True, result: {'status': 'e14', 'text': ' ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e24', 'text': 'c', 'info': 'identfier'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '\n    ', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e21', 'text': '}', 'info': 'block'}
-INFO:root:success:True, result: {'status': 'e14', 'text': '\n', 'info': 'whitespace'}
-INFO:root:success:True, result: {'status': 'e21', 'text': '}', 'info': 'block'}
+INFO:root:can not match: &
+INFO:root:print result
+ +--------+-------------+------------+
+| status | origin_char | infomation |
++--------+-------------+------------+
+|  e33   |     int     |    type    |
+|  e14   |             | whitespace |
+|  e24   |     main    | identfier  |
+|  e19   |      (      |  brackets  |
+|  e19   |      )      |  brackets  |
+|  e14   |             | whitespace |
+|        |             |            |
+|  e21   |      {      |   block    |
+|  e14   |             | whitespace |
+|        |             |            |
+|  e33   |     int     |    type    |
+| error  |      &      |   error    |
++--------+-------------+------------+
