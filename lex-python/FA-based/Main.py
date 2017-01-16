@@ -1,6 +1,12 @@
 #!usr/bin/env python
 #coding=utf-8
 # main.py
+
+# Author      :   Xionghui Chen
+# Created     :   2017.1.2
+# Modified    :   2017.1.2
+# Version     :   1.0
+
 import json
 import logging
 

@@ -1,5 +1,14 @@
 #!usr/bin/env python
 #coding=utf-8
+#!/usr/bin/env python
+# coding=utf-8
+
+# Author      :   Xionghui Chen
+# Created     :   2017.1.2
+# Modified    :   2017.1.2
+# Version     :   1.0
+
+
 DFA_hash_dic = {
     '0':{
         'i':'1','t':'2','w':'3','f':'4','d':'6',

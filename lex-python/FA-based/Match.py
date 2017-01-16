@@ -1,6 +1,12 @@
 #!usr/bin/env python
 #coding=utf-8
 # match.py
+
+# Author      :   Xionghui Chen
+# Created     :   2017.1.2
+# Modified    :   2017.1.2
+# Version     :   1.0
+
 from Global import DFA_hash_dic, node_reg_mapping, key_mapping_regex
 import logging
 import re
