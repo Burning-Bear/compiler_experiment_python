@@ -1,0 +1,18 @@
+INFO:root:can not match: &
+INFO:root:print result
+ +--------+-------------+------------+
+| status | origin_char | infomation |
++--------+-------------+------------+
+|  e33   |     int     |    type    |
+|  e14   |             | whitespace |
+|  e24   |     main    | identfier  |
+|  e19   |      (      |  brackets  |
+|  e19   |      )      |  brackets  |
+|  e14   |             | whitespace |
+|        |             |            |
+|  e21   |      {      |   block    |
+|  e14   |             | whitespace |
+|        |             |            |
+|  e33   |     int     |    type    |
+| error  |      &      |   error    |
++--------+-------------+------------+
