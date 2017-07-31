@@ -66,8 +66,10 @@ processor = ParsingTableProcessor(production)
 # 构造分析表
 processor = parsing_table_driver(processor)
 # 打印
+print "print??"
 processor.print_parsing_table()
 processor.print_status_list()
+print "print??"
 # 语法分析
 token_fp = open("input.txt",'r')
 # 构造语法分析器

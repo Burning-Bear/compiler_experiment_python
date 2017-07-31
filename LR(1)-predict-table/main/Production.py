@@ -61,9 +61,11 @@ class ProItem(object):
         Args:
             index: 字符的下标
         """
+        print "token_list is%s"%self.token_list
         return self.token_list[index]
 
     def print_item(self):
+
         for index,x in enumerate(self.token_list):
             logging.info("----ProItem number is %s"%index)
             x.print_char()     

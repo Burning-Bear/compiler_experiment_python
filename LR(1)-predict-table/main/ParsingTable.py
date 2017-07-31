@@ -26,6 +26,8 @@ from Global import EPSILON
 from prettytable import PrettyTable
 from Production import ProItem
 
+import Tkinter    
+
 class LR_produc_item(object):
     """
         用于描述一个LR(1)分析过程中每个产生式的状态，它包含了dot和预测符信息
@@ -358,7 +360,7 @@ class ParsingTableProcessor(object):
                 return index
         return -1
 
-    def print_parsing_table(self):
+    def print_parsing_table(self,text=None):
         
         
         tabletab = ['STATUS']
@@ -378,7 +380,11 @@ class ParsingTableProcessor(object):
             for key in self.production_list.get_goto_set():
                 row.append(self.get_parsing(index,key))
             x.add_row(row)
-        logging.info("printing the predict parsing table...\n %s"%x)
+        if text == None:
+            logging.info("printing the predict parsing table...\n %s"%x)
+        else:
+            print "in printing!"
+            text.insert(Tkinter.END,x)
 
     def print_status_list(self):
         logging.info("printing the definited status list...\n")
