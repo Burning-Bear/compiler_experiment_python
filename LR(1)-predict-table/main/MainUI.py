@@ -3,7 +3,7 @@
 
 # Author      :   Xionghui Chen
 # Created     :   2017.7.30
-# Modified    :   2017.7.30
+# Modified    :   2017.8.4
 # Version     :   1.0
 
 # testUI.py
@@ -85,7 +85,7 @@ class MainFrame(Tkinter.Frame):
         construct_button.grid(row=3,column=1,padx=14)
         parsing_button = Tkinter.Button(
             self.control_test_frame, 
-            text="对token进行语法分析",
+            text="对tokens进行语法分析",
             command=self.token_analyze)
         parsing_button.grid(row=3,columnspan=2)
         # .grid(row=1)

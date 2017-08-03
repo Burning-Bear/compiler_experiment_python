@@ -3,7 +3,7 @@
 
 # Author      :   Xionghui Chen
 # Created     :   2017.1.8
-# Modified    :   2017.1.8
+# Modified    :   2017.8.4
 # Version     :   1.0
 
 # Parsing.py
@@ -94,7 +94,7 @@ class ParsingProcessor(object):
     def print_log(self,text=None):
         """以表格的形式打印分析过程
         """
-        tabletab=['id','status stack','token stack','input','action']
+        tabletab=['id','status stack','tokens stack','input','action']
         x = PrettyTable(tabletab)  
         x.align["STATUS"] = "l"# Left align city names
         for item in self.parsing_log:
