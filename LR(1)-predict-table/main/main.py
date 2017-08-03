@@ -57,23 +57,23 @@ def parsing_table_driver(processor):
                 processor.add_to_parsing_table('s'+str(old_status_id), definited_status_id, key)
     return processor
 
-
-production_fp = open("production.txt",'r')
-# 构造产生式
-production = ProductionSet(production_fp)
-# 生成分析表构造器
-processor = ParsingTableProcessor(production)
-# 构造分析表
-processor = parsing_table_driver(processor)
-# 打印
-print "print??"
-processor.print_parsing_table()
-processor.print_status_list()
-print "print??"
-# 语法分析
-token_fp = open("input.txt",'r')
-# 构造语法分析器
-parsing = ParsingProcessor(token_fp,processor.predict_parsing_table,processor.production_list)
-parsing.parsing()
-# 打印分析结构
-parsing.print_log()
+if __name__ == '__main__':
+    production_fp = open("production.txt",'r')
+    # 构造产生式
+    production = ProductionSet(production_fp)
+    # 生成分析表构造器
+    processor = ParsingTableProcessor(production)
+    # 构造分析表
+    processor = parsing_table_driver(processor)
+    # 打印
+    print "print??"
+    processor.print_parsing_table()
+    processor.print_status_list()
+    print "print??"
+    # 语法分析
+    token_fp = open("input.txt",'r')
+    # 构造语法分析器
+    parsing = ParsingProcessor(token_fp,processor.predict_parsing_table,processor.production_list)
+    parsing.parsing()
+    # 打印分析结构
+    parsing.print_log()

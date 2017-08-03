@@ -11,6 +11,7 @@ import Queue
 import json
 import logging
 from prettytable import PrettyTable
+import Tkinter
 class ParsingProcessor(object):
     def __init__(self, fp, parsing_table, production_list):
 
@@ -90,7 +91,7 @@ class ParsingProcessor(object):
                     self.token_stack.append(new_token)
                     # - 产生式规约成功，输出
 
-    def print_log(self):
+    def print_log(self,text=None):
         """以表格的形式打印分析过程
         """
         tabletab=['id','status stack','token stack','input','action']
@@ -98,5 +99,8 @@ class ParsingProcessor(object):
         x.align["STATUS"] = "l"# Left align city names
         for item in self.parsing_log:
             x.add_row(item)
-        logging.info("printing the parsing step...\n%s"%x)
+        if text==None:
+            logging.info("printing the parsing step...\n%s"%x)
+        else:
+            text.insert(Tkinter.END,x)
         

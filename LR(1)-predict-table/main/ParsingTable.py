@@ -386,11 +386,15 @@ class ParsingTableProcessor(object):
             print "in printing!"
             text.insert(Tkinter.END,x)
 
-    def print_status_list(self):
+    def print_status_list(self,text=None):
         logging.info("printing the definited status list...\n")
         for index, status in enumerate(self.definited_status_list):
-            logging.info("--------------------------------")
-            logging.info('|'+("status I%s:"%index).ljust(30)+'|')
+            if text == None:
+                logging.info("--------------------------------")
+                logging.info('|'+("status I%s:"%index).ljust(30)+'|')
+            else:
+                text.insert(Tkinter.END,"--------------------------------\n")
+                text.insert(Tkinter.END,'|'+("status I%s:"%index).ljust(30)+'|\n')
             for lr_item in status.get_status_list():
                 produc_id = lr_item.produc_id
                 dot_location = lr_item.dot_location
@@ -402,6 +406,13 @@ class ParsingTableProcessor(object):
                     if index == dot_location:
                         right_char = right_char+'.'
                     right_char = right_char + token.char
-                logging.info('|'+(left_char+"->"+right_char+","+str(predict_list)).center(30)+"|")
-            logging.info("--------------------------------")
-            logging.info("  ")
+                if text == None:
+                    logging.info('|'+(left_char+"->"+right_char+","+str(predict_list)).center(30)+"|")
+                else:
+                    text.insert(Tkinter.END,'|'+(left_char+"->"+right_char+","+str(predict_list)).center(30)+"|\n")
+            if text ==None:
+                logging.info("--------------------------------")
+                logging.info("  ")
+            else:
+                text.insert(Tkinter.END,"--------------------------------\n")
+                text.insert(Tkinter.END,"   \n")
